@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:hessian.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!--客户端Hessian代理工厂Bean-->
+	<bean id="showService"
+		class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<!--这是因为接口中出现方法重载，在调用时，服务器端会跑出异常 。在整合spring中，在客户端的配置里面加上如下代码可以解决：-->
+		<property name="overloadEnabled" value="true" />
+		<!--请求代理Servlet路径：-->
+		<property name="serviceUrl" value="${hessian.url}showService" />
+		<!--接口定义：-->
+		<property name="serviceInterface"
+			value="com.bin.emp.service.ShowService" />
+	</bean> 
+	<bean id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+    <property name="maxUploadSize" value="1073741824" />  
+	</bean>	
+</beans>

@@ -1,0 +1,9 @@
+description = """datagrid-cli"""
+apply plugin: 'war'
+apply plugin: "eclipse"
+dependencies {
+
+	compile project(':datagrid-ser')
+	//compile files('lib/ojdbc7.jar')
+
+}

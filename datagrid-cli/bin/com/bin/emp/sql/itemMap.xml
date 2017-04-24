@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bin.emp.dao.ItemDao">
+
+<resultMap id="tempblob" type="java.util.HashMap">  
+      <result property="photo_data" column="photo_data" jdbcType="BLOB" javaType ="byte[]" typeHandler="org.apache.ibatis.type.BlobTypeHandler" />  
+</resultMap> 
+
+<select id="findByPage" 
+	resultType="com.bin.emp.entity.Item">
+	select itemid, productid,listprice,unitcost,attr1,status from  
+  ( 
+    select rownum rn,t.*  
+    from  
+    ( 
+      select *  
+      from item  
+      order by itemid asc  
+    ) t 
+  ) 
+  where rn between #{0} and #{1} 
+	
+</select>
+
+<select id="findByCount" 
+	resultType="int">
+	
+	select count(*) from item 
+	
+</select>
+
+<select id="findByItemId" 
+	resultType="com.bin.emp.entity.Item">
+	
+	select * from item 
+	where itemid = #{0}
+	
+</select>
+
+<insert id="save" 
+	parameterType="com.bin.emp.entity.Item">
+insert into item 
+ (itemid, productid,listprice,unitcost,attr1,status) 
+values (#{itemid,jdbcType=VARCHAR},
+		#{productid,jdbcType=VARCHAR},
+		#{listprice,jdbcType=NUMERIC},
+		#{unitcost,jdbcType=NUMERIC},
+		#{attr1,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR})
+</insert>
+
+<update id="update" 
+    parameterType="com.bin.emp.entity.Item">
+update item 
+set  
+	productid =#{productid,jdbcType=VARCHAR},
+	listprice = #{listprice,jdbcType=NUMERIC},
+	unitcost = #{unitcost,jdbcType=NUMERIC},
+	attr1 = #{attr1,jdbcType=VARCHAR},
+	status = #{status,jdbcType=VARCHAR}
+
+
+where itemid=#{itemid,jdbcType=VARCHAR} 
+</update>
+
+<delete id="del" 
+	parameterType="string">
+delete from item 
+where itemid = #{itemid,jdbcType=VARCHAR} 
+</delete>
+
+<update id="createPhoto">  
+
+update item 
+set  
+	PHOTO_DATA =  #{1, javaType=byte[], jdbcType=BLOB, typeHandler=org.apache.ibatis.type.BlobTypeHandler}  
+where itemid=#{0,jdbcType=VARCHAR} 
+</update>  
+
+<select id="findImgByItemid" resultMap="tempblob">
+	
+	select photo_data 
+	from item  
+  	where itemid = #{0} 
+</select>
+
+</mapper>

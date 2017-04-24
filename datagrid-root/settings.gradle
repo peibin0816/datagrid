@@ -1,0 +1,6 @@
+rootProject.name = 'datagrid-root'
+include 'datagrid-cli'
+include 'datagrid-ser'
+
+project(':datagrid-cli').projectDir = new File(settingsDir, '../datagrid-cli')
+project(':datagrid-ser').projectDir = new File(settingsDir, '../datagrid-ser')

@@ -1,0 +1,7 @@
+description = """datagrid-ser"""
+apply plugin: 'war'
+dependencies {
+
+	compile files('lib/ojdbc7.jar')
+
+}

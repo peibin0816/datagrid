@@ -1,0 +1,73 @@
+allprojects {
+    apply plugin: 'java' //Java插件
+    apply plugin: 'maven'
+    
+    group = 'com.bin'
+    version = '1.0'
+    sourceCompatibility = 1.8//编译JDK版本
+    targetCompatibility = 1.8//目标JDK版本
+    compileJava.options.encoding = 'UTF-8'//编码设置
+    compileTestJava.options.encoding = 'UTF-8'
+}
+
+ext {
+    springVersion="4.1.7.RELEASE"
+}
+
+
+//所有子项目配置
+final def var = subprojects {
+    
+    
+    repositories {
+       maven { url "http://nexus-stock.paic.com.cn:8080/nexus/content/repositories/public/" }
+    } 
+    //编译groovy代码时采用 UTF-8
+	tasks.withType(GroovyCompile) {   
+    	groovyOptions.encoding = "MacRoman"   
+	}   
+    
+    dependencies {
+	        compile(group: 'org.springframework', name: 'spring-context', version:'3.1.1.RELEASE') {
+				exclude(module: 'commons-logging')
+	    	}
+	    compile group: 'org.springframework', name: 'spring-webmvc', version:'3.1.1.RELEASE'
+	    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version:'1.9.9'
+	    compile group: 'org.codehaus.jackson', name: 'jackson-core-asl', version:'1.9.9'
+	    compile group: 'org.aspectj', name: 'aspectjrt', version:'1.6.10'
+	    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.6.6'
+	    //mybatis
+	    compile group: 'org.mybatis', name: 'mybatis', version:'3.3.0'
+     	compile group: 'org.mybatis', name: 'mybatis-spring', version:'1.2.3'
+    	compile group: 'org.springframework', name: 'spring-jdbc', version:'3.1.1.RELEASE'
+    	//hessian
+    	compile group: 'com.caucho', name: 'hessian', version:'4.0.38'
+    	compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.2.1'
+    	compile group: 'commons-io', name: 'commons-io', version: '2.5'
+    	compile group: 'commons-dbcp', name: 'commons-dbcp', version:'1.4'
+    	//compile files('lib/ojdbc7.jar')
+	    compile group: 'javax.inject', name: 'javax.inject', version:'1'
+	    compile group: 'javax.servlet', name: 'jstl', version:'1.2'
+	    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
+	    
+	    runtime group: 'org.slf4j', name: 'jcl-over-slf4j', version:'1.6.6'
+	    runtime group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.6.6'
+	    runtime(group: 'log4j', name: 'log4j', version:'1.2.15') {
+			exclude(module: 'mail')
+			exclude(module: 'jms')
+			exclude(module: 'jmxtools')
+			exclude(module: 'jmxri')
+	    	}
+	    
+	    testCompile group: 'junit', name: 'junit', version:'4.7'
+	 }
+	 tasks.withType(JavaCompile) {  
+    	options.encoding = "UTF-8"  
+	 }
+}
+
+project(':datagrid-cli') {
+	apply plugin: 'war' 
+	//webAppDirName = 'src/main/webapp'    // 设置 WebApp 根目录 
+}
+

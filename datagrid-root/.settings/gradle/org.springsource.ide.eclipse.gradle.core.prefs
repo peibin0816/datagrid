@@ -1,0 +1,5 @@
+#org.springsource.ide.eclipse.gradle.core.preferences.GradleProjectPreferences
+#Tue Apr 11 15:42:41 CST 2017
+build.family.org.gradle.tooling.model.eclipse.HierarchicalEclipseProject=;../datagrid-cli;../datagrid-ser;
+org.springsource.ide.eclipse.gradle.linkedresources=
+org.springsource.ide.eclipse.gradle.rootprojectloc=
